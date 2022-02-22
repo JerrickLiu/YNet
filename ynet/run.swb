@@ -1,0 +1,6 @@
+#!/bin/bash
+#SBATCH --partition=gpux4
+eval "$(conda shell.bash hook)"
+module load opence
+conda activate trajnet
+python3 ~/traj_pred/ynet/train_SDD_longterm.py
