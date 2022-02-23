@@ -233,7 +233,7 @@ class YNet:
 		"""
 
 		log_file = 'pretrained_models/' + experiment_name + '.log'
-		logging.basicConfig(filename=log_file, encoding='utf-8', level=logging.DEBUG)
+		logging.basicConfig(filename=log_file, level=logging.INFO)
 
 		if device is None:
 			device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
