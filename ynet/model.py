@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 import numpy as np
+import time
 
 from utils.softargmax import SoftArgmax2D, create_meshgrid
 from utils.preprocessing import augment_data, create_images_dict
@@ -313,11 +314,13 @@ class YNet:
 
 		print('Start training')
 		for e in tqdm(range(params['num_epochs']), desc='Epoch'):
+			t0 = time.time()
 			train_ADE, train_FDE, train_loss = train(model, train_loader, train_images, e, obs_len, pred_len,
 													 batch_size, params, gt_template, device,
 													 input_template, optimizer, criterion, dataset_name, self.homo_mat)
 			self.train_ADE.append(train_ADE)
 			self.train_FDE.append(train_FDE)
+			logging.info('Epoch {} took {} seconds'.format(e, time.time() - t0))
 
 			# For faster inference, we don't use TTST and CWS here, only for the test set evaluation
 			val_ADE, val_FDE = evaluate(model, val_loader, val_images, num_goals, num_traj,
