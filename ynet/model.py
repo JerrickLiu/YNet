@@ -329,7 +329,7 @@ class YNet:
 										waypoints=params['waypoints'], resize=params['resize'],
 										temperature=params['temperature'], use_TTST=params['use_TTST'],
 										use_CWS=params['use_CWS'], CWS_params=params['CWS_params'],
-                                                                                dataset_name=dataset_name,
+                                        dataset_name=dataset_name,
 										homo_mat=self.homo_mat, mode='val')
 
 			print(f'Epoch {e}: \nVal ADE: {val_ADE} \nVal FDE: {val_FDE}')
