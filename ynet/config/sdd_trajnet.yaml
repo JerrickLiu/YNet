@@ -22,6 +22,7 @@ decoder_channels:  # list of kernels in decoder
 # list of selected goal and waypoints as timestep idx, e.g. 14 means the 14th future timestep is used as a waypoint,
 # last element is goal timestep
 waypoints:
+  - 5
   - 11
 
 temperature: 1.0
@@ -41,5 +42,8 @@ use_TTST: True
 rel_threshold: 0.01
 
 # CWS
-use_CWS: False
-CWS_params: None
+use_CWS: True
+CWS_params:
+  sigma_factor: 6
+  ratio: 2
+  rot: True
