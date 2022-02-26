@@ -217,7 +217,7 @@ class YNet:
 							   decoder_channels=params['decoder_channels'],
 							   waypoints=len(params['waypoints']))
 
-	def train(self, train_data, val_data, params, train_image_path, val_image_path, experiment_name, batch_size=8, num_goals=20, num_traj=1, device=None, dataset_name=None, use_TTST=False, use_CWS=False):
+	def train(self, train_data, val_data, params, train_image_path, val_image_path, experiment_name, batch_size=8, num_goals=20, num_traj=1, device=None, dataset_name=None):
 		"""
 		Train function
 		:param train_data: pd.df, train data
@@ -327,8 +327,8 @@ class YNet:
 										obs_len=obs_len, batch_size=batch_size,
 										device=device, input_template=input_template,
 										waypoints=params['waypoints'], resize=params['resize'],
-										temperature=params['temperature'], use_TTST=use_TTST,
-										use_CWS=use_CWS, dataset_name=dataset_name,
+										temperature=params['temperature'], use_TTST=params['use_TTST'],
+										use_CWS=params['use_CWS'], dataset_name=dataset_name,
 										homo_mat=self.homo_mat, mode='val')
 
 			print(f'Epoch {e}: \nVal ADE: {val_ADE} \nVal FDE: {val_FDE}')

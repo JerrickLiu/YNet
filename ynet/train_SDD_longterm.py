@@ -6,7 +6,7 @@ from model import YNet
 
 
 CONFIG_FILE_PATH = 'config/sdd_longterm.yaml'  # yaml config file containing all the hyperparameters
-EXPERIMENT_NAME = 'sdd_longterm'  # arbitrary name for this experiment
+EXPERIMENT_NAME = 'sdd_longterm_with_TTST_CWS'  # arbitrary name for this experiment
 DATASET_NAME = 'sdd'
 
 TRAIN_DATA_PATH = 'data/SDD/train_longterm.pkl'
@@ -18,7 +18,7 @@ PRED_LEN = 30  # in timesteps
 NUM_GOALS = 20  # K_e
 NUM_TRAJ = 1  # K_a
 
-BATCH_SIZE = 4
+BATCH_SIZE = 8
 
 with open(CONFIG_FILE_PATH) as file:
     params = yaml.load(file, Loader=yaml.FullLoader)
