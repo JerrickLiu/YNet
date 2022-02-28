@@ -217,7 +217,7 @@ class YNet:
 							   decoder_channels=params['decoder_channels'],
 							   waypoints=len(params['waypoints']))
 
-	def train(self, train_data, val_data, params, train_image_path, val_image_path, experiment_name, batch_size=8, num_goals=20, num_traj=1, device=None, dataset_name=None):
+	def train(self, train_data, val_data, params, train_image_path, val_image_path, experiment_name, batch_size=8, num_goals=20, num_traj=1, device=None, dataset_name=None, checkpoint_path=None, use_checkpoint=False):
 		"""
 		Train function
 		:param train_data: pd.df, train data
@@ -289,12 +289,17 @@ class YNet:
 
 		model = self.model.to(device)
 
+		optimizer = torch.optim.Adam(model.parameters(), lr=params["learning_rate"])
+		criterion = nn.BCEWithLogitsLoss()
+
+		start_epoch = 0
+
+		if use_checkpoint is True and checkpoint_path is not None:
+			model, optimizer, start_epoch = self.load_checkpoint(checkpoint_path, optimizer)
+
 		# Freeze segmentation model
 		for param in model.semantic_segmentation.parameters():
 			param.requires_grad = False
-
-		optimizer = torch.optim.Adam(model.parameters(), lr=params["learning_rate"])
-		criterion = nn.BCEWithLogitsLoss()
 
 		# Create template
 		size = int(4200 * params['resize'])
@@ -313,7 +318,7 @@ class YNet:
 		self.val_FDE = []
 
 		print('Start training')
-		for e in tqdm(range(params['num_epochs']), desc='Epoch'):
+		for e in tqdm(range(start_epoch, params['num_epochs']), desc='Epoch'):
 			t0 = time.time()
 			train_ADE, train_FDE, train_loss = train(model, train_loader, train_images, e, obs_len, pred_len,
 													 batch_size, params, gt_template, device,
@@ -341,7 +346,7 @@ class YNet:
 				print(f'Best Epoch {e}: \nVal ADE: {val_ADE} \nVal FDE: {val_FDE}')
                                 
 				logging.info(f'Best Epoch {e}: \nVal ADE: {val_ADE} \nVal FDE: {val_FDE}')
-				torch.save(model.state_dict(), 'pretrained_models/' + experiment_name + '_weights.pt')
+				self.save_checkpoint('pretrained_models/' + experiment_name + '_weights.pt', optimizer, e)
 				best_test_ADE = val_ADE
 
 	def evaluate(self, data, params, image_path, batch_size=8, num_goals=20, num_traj=1, rounds=1, device=None, dataset_name=None):
@@ -424,11 +429,19 @@ class YNet:
 		print(f'\n\nAverage performance over {rounds} rounds: \nTest ADE: {sum(self.eval_ADE) / len(self.eval_ADE)} \nTest FDE: {sum(self.eval_FDE) / len(self.eval_FDE)}')
 
 
-	def load(self, path):
-		print(self.model.load_state_dict(torch.load(path)))
+	def load_checkpoint(self, path, optimizer):
+		checkpoint = torch.load(path)
+		optimizer.load_state_dict(checkpoint["optimizer"])
+		self.model.load_state_dict(checkpoint["state_dict"])
+		return optimizer, checkpoint["epoch"]
 
-	def save(self, path):
-		torch.save(self.model.state_dict(), path)
+	def save_checkpoint(self, path, optimizer, epoch):
+		checkpoint = {
+			"epoch": epoch + 1,
+			"state_dict": self.model.state_dict(),
+			"optimizer": optimizer.state_dict()
+		}
+		torch.save(checkpoint, path)
 
 
 

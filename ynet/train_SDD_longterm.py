@@ -9,6 +9,8 @@ CONFIG_FILE_PATH = 'config/sdd_longterm.yaml'  # yaml config file containing all
 EXPERIMENT_NAME = 'sdd_longterm_with_TTST_CWS'  # arbitrary name for this experiment
 DATASET_NAME = 'sdd'
 
+CHECKPOINT_PATH = 'pretrained_models/' + EXPERIMENT_NAME + '_weights.pt'
+
 TRAIN_DATA_PATH = 'data/SDD/train_longterm.pkl'
 TRAIN_IMAGE_PATH = 'data/SDD/train'
 VAL_DATA_PATH = 'data/SDD/test_longterm.pkl'
@@ -34,4 +36,4 @@ model = YNet(obs_len=OBS_LEN, pred_len=PRED_LEN, params=params)
 
 model.train(df_train, df_val, params, train_image_path=TRAIN_IMAGE_PATH, val_image_path=VAL_IMAGE_PATH,
             experiment_name=EXPERIMENT_NAME, batch_size=BATCH_SIZE, num_goals=NUM_GOALS, num_traj=NUM_TRAJ, 
-            device=None, dataset_name=DATASET_NAME)
+            device=None, dataset_name=DATASET_NAME, checkpoint_path=CHECKPOINT_PATH, use_checkpoint=True)
