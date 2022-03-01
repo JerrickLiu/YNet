@@ -318,7 +318,8 @@ class YNet:
 		self.val_FDE = []
 
 		print('Start training')
-                logger.info(f"STARTING EPOCH: {start_epoch}") 
+		logging.info(f"STARTING EPOCH: {start_epoch}") 
+
 		for e in tqdm(range(start_epoch, params['num_epochs']), desc='Epoch'):
 			t0 = time.time()
 			train_ADE, train_FDE, train_loss = train(model, train_loader, train_images, e, obs_len, pred_len,
