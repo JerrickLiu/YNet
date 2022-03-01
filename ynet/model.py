@@ -428,6 +428,8 @@ class YNet:
 
 		print(f'\n\nAverage performance over {rounds} rounds: \nTest ADE: {sum(self.eval_ADE) / len(self.eval_ADE)} \nTest FDE: {sum(self.eval_FDE) / len(self.eval_FDE)}')
 
+	def load(self, path):
+		print(self.model.load_state_dict(torch.load(path)))
 
 	def load_checkpoint(self, path, optimizer):
 		checkpoint = torch.load(path)
