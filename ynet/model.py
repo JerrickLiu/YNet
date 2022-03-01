@@ -295,7 +295,7 @@ class YNet:
 		start_epoch = 0
 
 		if use_checkpoint is True and checkpoint_path is not None:
-			model, optimizer, start_epoch = self.load_checkpoint(checkpoint_path, optimizer)
+			optimizer, start_epoch = self.load_checkpoint(checkpoint_path, optimizer)
 
 		# Freeze segmentation model
 		for param in model.semantic_segmentation.parameters():
@@ -318,6 +318,7 @@ class YNet:
 		self.val_FDE = []
 
 		print('Start training')
+                logger.info(f"STARTING EPOCH: {start_epoch}") 
 		for e in tqdm(range(start_epoch, params['num_epochs']), desc='Epoch'):
 			t0 = time.time()
 			train_ADE, train_FDE, train_loss = train(model, train_loader, train_images, e, obs_len, pred_len,
