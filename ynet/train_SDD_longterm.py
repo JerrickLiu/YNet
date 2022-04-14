@@ -36,4 +36,4 @@ model = YNet(obs_len=OBS_LEN, pred_len=PRED_LEN, params=params)
 
 model.train(df_train, df_val, params, train_image_path=TRAIN_IMAGE_PATH, val_image_path=VAL_IMAGE_PATH,
             experiment_name=EXPERIMENT_NAME, batch_size=BATCH_SIZE, num_goals=NUM_GOALS, num_traj=NUM_TRAJ, 
-            device=None, dataset_name=DATASET_NAME, checkpoint_path=CHECKPOINT_PATH, use_checkpoint=False)
+            device=None, dataset_name=DATASET_NAME, checkpoint_path=CHECKPOINT_PATH, use_checkpoint=True)
