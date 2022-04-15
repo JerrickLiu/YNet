@@ -29,7 +29,9 @@ class SceneDataset(Dataset):
 		meta = []
 		scene_list = []
 		for meta_id, meta_df in tqdm(data.groupby('sceneId', as_index=False), desc='Prepare Dataset'):
-			trajectories.append(meta_df[['x', 'y']].to_numpy().astype('float32').reshape(-1, total_len, 2))
+			thing = meta_df[['x', 'y']].to_numpy().astype('float32').reshape(-1, total_len, 2)
+			print(thing.shape)
+			trajectories.append(thing)
 			meta.append(meta_df)
 			scene_list.append(meta_df.iloc()[0:1].sceneId.item())
 		return np.array(trajectories), meta, scene_list
