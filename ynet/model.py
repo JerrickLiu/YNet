@@ -274,8 +274,6 @@ class YNet:
 		# Initialize dataloaders
 		train_dataset = SceneDataset(df_train, resize=params['resize'], total_len=total_len)
         
-        print(train_dataset[0])
-
 		train_loader = DataLoader(train_dataset, batch_size=1, collate_fn=scene_collate, shuffle=True)
 
 		val_dataset = SceneDataset(val_data, resize=params['resize'], total_len=total_len)
